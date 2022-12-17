@@ -41,8 +41,10 @@ while tau < endtau:
     while count < seed:
         np.random.seed(count)
         num_ite =  ite 
-        ncz = np.genfromtxt(archivo_entrada, delimiter=' ', skip_header = 1 , usecols=(1) , skip_footer=2596, dtype = int)            # primer n=nodos c=capacidad z=mejor_solucion en el archivo
-        knapback = np.genfromtxt(archivo_entrada, delimiter=',', skip_header = 5 , usecols=(1, 2, 3) , skip_footer=2575, dtype = int) # valor, peso, asignacion
+        # ncz = np.genfromtxt(archivo_entrada, delimiter=' ', skip_header = 1 , usecols=(1) , skip_footer=2596, dtype = int)            # primer n=nodos c=capacidad z=mejor_solucion en el archivo
+        ncz = pd.read_table(archivo_entrada, delimiter=' ', skiprows=0, usecols=[1], nrows=3, dtype=int).to_numpy()[:, 0]
+        # knapback = np.genfromtxt(archivo_entrada, delimiter=',', skip_header = 5 , usecols=(1, 2, 3) , skip_footer=2575, dtype = int) # valor, peso, asignacion
+        knapback = pd.read_csv(archivo_entrada, skiprows=5, usecols=[1, 2, 3], nrows=ncz[0], dtype=int, header=None).to_numpy()
         initial_solution = np.random.randint(2, size=int(ncz[0]))
         while True: # Solucion inicial factible, mejorable para capacidades pequeñas
             if not factibility():
